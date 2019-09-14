@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const utils = require("../lib/utils");
+
 const expectatorSchema = new mongoose.Schema({
   fullName: {
     type: String,
@@ -21,9 +23,19 @@ const expectatorSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      lastHash: String,
+      lastHash: {
+        type: String,
+        default: null,
+      },
     },
   ],
+});
+
+expectatorSchema.pre("save", async function(next) {
+  for await (let obj of this.urls) {
+    obj.lastHash = await utils.pipeline(obj.url);
+  }
+  next();
 });
 
 module.exports = mongoose.model("Expectator", expectatorSchema);
