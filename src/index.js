@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
 const express = require("express");
 
-const config = require("./lib/config");
+const db = require("./lib/db");
 const routes = require("./routes");
+const config = require("./lib/config");
 
-mongoose.connect(config.dbUrl, { useNewUrlParser: true }).catch(err => {
+db.connect().catch(err => {
   console.log(err.message);
   process.exit(1);
 });
