@@ -7,6 +7,7 @@ const create = async (req, res) => {
       email: req.body.email,
       phoneNumber: req.body.phoneNumber,
       urls: req.body.urls,
+      notificationMethod: req.body.notificationMethod,
     });
     await newExpectator.save();
     res.status(201).send("Expectator created");

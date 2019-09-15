@@ -29,6 +29,11 @@ const expectatorSchema = new mongoose.Schema({
       },
     },
   ],
+  notificationMethod: {
+    type: String,
+    required: true,
+    enum: ["sms", "email"],
+  },
 });
 
 expectatorSchema.pre("save", async function(next) {
