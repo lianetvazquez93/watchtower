@@ -73,3 +73,36 @@ curl -X POST \
 ```
 
 **Note:** Please, make sure the email and phone number are valid and existent, and the notification method is either `email` or `sms`, otherwise, the notifications will throw an exception because of not valid method found or in case of invalid data, nothing will be received.
+
+## Cron job
+
+The real value of the tracking script inside the codebase is to make it run periodically so Expectators can be notified once per day about changes in the pages they are following, to configure this feature, execute the command below:
+
+```bash
+crontab -e
+```
+
+And append the following line in the file, please replace the `<project_path>` flag by the project location in the server:
+
+```bash
+0 12 * * * cd <project_path> && ./track.sh
+```
+
+Then, the command will execute every day at noon and the Expectators will receive notifications in case of changes.
+
+## Features for improvement.
+
+- Enable user accounts so Expectators can edit and retrieve their reports.
+- Create a separate Google Spreadsheet per Expectator.
+- Add diff tracking system (similar to git) so Expectators can retrieve the exact changes in the pages they follow.
+- Add html report in addition to spreadsheet report to enrich visibility of diffs
+- UI.
+
+## Libraries and packages
+
+- [Sendgrid Mail](https://www.npmjs.com/package/@sendgrid/mail)
+- [Dotenv](https://www.npmjs.com/package/dotenv)
+- [Express](https://www.npmjs.com/package/express)
+- [Google Spreadsheets](https://www.npmjs.com/package/google-spreadsheet)
+- [Mongoose](https://www.npmjs.com/package/mongoose)
+- [Twilio](https://www.npmjs.com/package/twilio)
