@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:server": "node -r dotenv/config src/index.js",
-    "run:tracker": "node -r dotenv/config command/tracker.js"
+    "serve": "node -r dotenv/config src/index.js",
+    "track": "node -r dotenv/config command/tracker.js"
   },
   "keywords": [],
   "author": "",

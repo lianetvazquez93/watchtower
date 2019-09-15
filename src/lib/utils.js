@@ -1,40 +1,27 @@
-const http = require("http");
-const https = require("https");
 const crypto = require("crypto");
 const { minify } = require("html-minifier");
+const request = require("request");
 
 function md5(data) {
   return crypto
     .createHash("md5")
-    .update(data, "binary")
+    .update(data)
     .digest("hex");
 }
 
 function openUrl(url) {
   return new Promise((resolve, reject) => {
-    let client = http;
-
-    if (url.toString().indexOf("https") === 0) {
-      client = https;
-    }
-
-    client
-      .get(url, resp => {
-        let data = "";
-
-        // A chunk of data has been recieved.
-        resp.on("data", chunk => {
-          data += chunk;
-        });
-
-        // The whole response has been received. Print out the result.
-        resp.on("end", () => {
-          resolve(data.toString());
-        });
-      })
-      .on("error", err => {
-        reject(err);
+    request(url, { time: true }, (error, resp, body) => {
+      if (error) {
+        reject(error);
+      }
+      resolve({
+        time: resp.elapsedTime,
+        statusCode: resp.statusCode,
+        httpVersion: resp.httpVersion,
+        body,
       });
+    });
   });
 }
 
@@ -53,10 +40,15 @@ function hash(str) {
 }
 
 async function pipeline(url) {
-  const rawHtml = await openUrl(url);
-  const minifiedHtml = minifyContent(rawHtml);
+  const { time, statusCode, httpVersion, body } = await openUrl(url);
+  const minifiedHtml = minifyContent(body);
   const hashed = hash(minifiedHtml);
-  return hashed;
+  return {
+    time,
+    statusCode,
+    httpVersion,
+    hash: hashed,
+  };
 }
 
 module.exports = {

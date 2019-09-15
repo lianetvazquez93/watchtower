@@ -33,7 +33,8 @@ const expectatorSchema = new mongoose.Schema({
 
 expectatorSchema.pre("save", async function(next) {
   for await (let obj of this.urls) {
-    obj.lastHash = await utils.pipeline(obj.url);
+    const { hash } = await utils.pipeline(obj.url);
+    obj.lastHash = hash;
   }
   next();
 });

@@ -10,16 +10,17 @@ const utils = require("../src/lib/utils");
     const expectators = await Expectator.find();
     for await (const expectator of expectators) {
       for await (const urlObj of expectator.urls) {
-        const hash = await utils.pipeline(urlObj.url);
-        if (urlObj.lastHash === hash) {
+        const data = await utils.pipeline(urlObj.url);
+        if (urlObj.lastHash === data.hash) {
           break;
         }
-        urlObj.lastHash = hash;
+        urlObj.lastHash = data.hash;
         const history = new History({
-          loadingTime: 444,
-          statusCode: 200,
+          loadingTime: data.time,
+          statusCode: data.statusCode,
           url: urlObj.url,
           expectator: expectator._id,
+          httpVersion: data.httpVersion,
         });
         await history.save();
       }

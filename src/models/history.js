@@ -8,6 +8,7 @@ const historySchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "Expectator",
   },
+  httpVersion: String,
 });
 
 module.exports = mongoose.model("History", historySchema);
