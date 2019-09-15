@@ -17,6 +17,7 @@
     "@sendgrid/mail": "^6.4.0",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "google-spreadsheet": "^2.0.8",
     "html-minifier": "^4.0.0",
     "mongoose": "^5.7.1",
     "twilio": "^3.34.0"
